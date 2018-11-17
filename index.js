@@ -1,5 +1,6 @@
 /**
  * Created by sergelichtveld on 29/07/18.
+ * Uses a text file as mock database
  */
 const rp = require('request-promise');
 const cheerio = require('cheerio');
@@ -48,49 +49,49 @@ rp(options)
         //Add new to old data
         oldData.unshift(newFound[0]);
 
-        // if(results.length > 0 && newFound.length > 0){
-        //
-        //     // Write to file
-        //     fs.writeFile("tmp/data.txt", JSON.stringify(oldData), (err) => {
-        //         if (err) {
-        //             console.error(err);
-        //             return;
-        //         }
-        //         console.log("File has been created");
-        //     });
-        //
-        //     //Send email
-        //     let transporter = nodemailer.createTransport({
-        //         service: 'gmail',
-        //         auth: {
-        //             user: 'myemail@gmail.com',
-        //             pass: 'abcdefg'
-        //         }
-        //     });
-        //
-        //     //Make email string
-        //     let i;
-        //     let emailtext ='';
-        //     for(i=0; i < newFound.length; i++){
-        //         emailtext += 'Seller: '+newFound[i].seller+' \n' +'Link: '+newFound[i].link+'\n'+'==============='+'\n';
-        //     }
-        //
-        //     let mailOptions = {
-        //         from: 'sergefeet@gmail.com',
-        //         to: 'sergelichtveld@hotmail.com',
-        //         subject: 'Sending Email using Node.js',
-        //         text: emailtext
-        //     };
-        //
-        //     transporter.sendMail(mailOptions, function(error, info){
-        //         if (error) {
-        //             console.log(error);
-        //         } else {
-        //             console.log('Email sent: ' + info.response);
-        //         }
-        //     });
-        //
-        // }
+        if(results.length > 0 && newFound.length > 0){
+
+            // Write to file
+            fs.writeFile("tmp/data.txt", JSON.stringify(oldData), (err) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log("File has been created");
+            });
+
+            //Send email
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'myemail@gmail.com',
+                    pass: 'abcdefg'
+                }
+            });
+
+            //Make email string
+            let i;
+            let emailtext ='';
+            for(i=0; i < newFound.length; i++){
+                emailtext += 'Seller: '+newFound[i].seller+' \n' +'Link: '+newFound[i].link+'\n'+'==============='+'\n';
+            }
+
+            let mailOptions = {
+                from: 'sergefeet@gmail.com',
+                to: 'sergelichtveld@hotmail.com',
+                subject: 'Sending Email using Node.js',
+                text: emailtext
+            };
+
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+
+        }
 
     })
     .catch((err) => {
